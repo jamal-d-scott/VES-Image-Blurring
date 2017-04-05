@@ -1,5 +1,6 @@
-﻿/*
+/*
  * Jamal D. Scott
+ * Arthur Byra
  * Tolls VES
  * Image Script
  * Computer Aid CAIHDC
@@ -30,43 +31,56 @@ namespace VES_Image_Manipulation
             Bitmap temp;
             int blurAmount;
 
-            //Outter loop increments through each file path in the list.
+            //Outer loop increments through each file path in the list.
             for (int i = 0; i < files.Length; i++)
             {
                 //Creates a new instance of the array to clear out the values that were left in the image array.
                 image = new Bitmap[5];
 
+                //Creates a new instance of random that will help scramble the images
+                Random r = new Random();
+                bool[] visited = new bool[5];
+
                 //Creates a new sub-directory based on the image that we're looking at.
                 String newDir = directory + @"\Image" + i;
                 System.IO.Directory.CreateDirectory(newDir);
 
-               for (int j = 0; j < 5; j++)
-               {
-                   /*
-                    * For simplicity, set the blur ammount to an already incrementing value.
-                    * because each new image needs to be blurrier
-                    */
+                for (int j = 0; j < 5; j++)
+                {
+                    /*
+                     * For simplicity, set the blur ammount to an already incrementing value.
+                     * because each new image needs to be blurrier
+                     */
                     blurAmount = j;
 
-                    if(j == 0)
+                    if (j == 0)
                     {
                         image[j] = new Bitmap(files[i]);
                         temp = new Bitmap(image[j]);
-                    } 
+                    }
                     else
                         //Used the previously blurred image to make the next one blurrier.
-                         temp = new Bitmap(image[j-1]);
+                        temp = new Bitmap(image[j - 1]);
 
-                   //Calls the method to blue our image.
+                    //Calls the method to blur our image.
                     temp = blur(temp, blurAmount);
 
-                   //Stores our newly blurred image.
+                    //Stores our newly blurred image.
                     image[j] = temp;
 
-                   //Writes the image to a jpg file in its directory.
-                    image[j].Save(newDir+"/img" + j + ".jpg");
-                    Console.WriteLine("\nWrote: " + newDir + "/img" + j + ".jpg");
-               }
+                    //inefficiently finds a number between 0 and 4 inclusively that hasn't been already used to assign as the name of the new image
+                    int rand = r.Next(0, 5);
+
+                    //Shuffles the ordering of the elements of the array.
+                    while (visited[rand] == true)
+                        rand = r.Next(0, 5);
+
+                    visited[rand] = true;
+
+                    //Writes the image to a jpg file in its directory.
+                    image[j].Save(newDir + "/img" + rand + ".jpg");
+                    Console.WriteLine("\nWrote: " + newDir + "/img" + rand + ".jpg");
+                }
             }
 
             Console.WriteLine("\nCompleted! All files have been saved to the directory: \n" + directory);

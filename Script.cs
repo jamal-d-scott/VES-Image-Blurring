@@ -32,7 +32,7 @@ namespace VES_Image_Manipulation
 
             //Set a list of all images in the Image folder.
             String[] files = System.IO.Directory.GetFiles(directory, "*", System.IO.SearchOption.TopDirectoryOnly);
-            totalImages = files.Length;
+            totalImages = files.Length*5;
             //Array to hold the images.
             Bitmap[] image;
             Bitmap temp;
@@ -89,7 +89,7 @@ namespace VES_Image_Manipulation
                     image[j].Save(newDir + "/img" + rand + ".jpg");
                     Console.WriteLine("\nWrote: " + newDir + "/img" + rand + ".jpg");
                     currentImage++;
-                    Console.WriteLine("\nProgress: " + currentImage + "/" + totalImages * 5 + " processed");
+                    Console.WriteLine("\nProgress: " + currentImage + "/" + totalImages  + " processed");
                 }
                 q++;
             }

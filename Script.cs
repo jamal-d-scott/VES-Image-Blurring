@@ -31,6 +31,9 @@ namespace VES_Image_Manipulation
             Bitmap temp;
             int blurAmount;
 
+            Console.Write("Enter initial number for image folder names: ");
+            int q = Console.ReadKey();
+
             //Outer loop increments through each file path in the list.
             for (int i = 0; i < files.Length; i++)
             {
@@ -42,7 +45,7 @@ namespace VES_Image_Manipulation
                 bool[] visited = new bool[5];
 
                 //Creates a new sub-directory based on the image that we're looking at.
-                String newDir = directory + @"\Image" + i;
+                String newDir = directory + @"\Image" + q;
                 System.IO.Directory.CreateDirectory(newDir);
 
                 for (int j = 0; j < 5; j++)
@@ -81,6 +84,7 @@ namespace VES_Image_Manipulation
                     image[j].Save(newDir + "/img" + rand + ".jpg");
                     Console.WriteLine("\nWrote: " + newDir + "/img" + rand + ".jpg");
                 }
+                q++;
             }
 
             Console.WriteLine("\nCompleted! All files have been saved to the directory: \n" + directory);
